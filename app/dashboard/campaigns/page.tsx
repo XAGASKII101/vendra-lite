@@ -360,7 +360,7 @@ export default function CampaignsPage() {
                     {getStatusIcon(campaign.status)}
                     <h3 className="font-semibold">{campaign.name}</h3>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(campaign.status)}`}>
-                      {campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}
+                      {campaign.status ? campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1) : "Unknown"}
                     </span>
                     <span className="px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
                       {getTypeLabel(campaign.type)}

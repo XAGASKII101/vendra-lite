@@ -304,7 +304,9 @@ export default function BroadcastsPage() {
                     {getStatusIcon(broadcast.status)}
                     <h3 className="font-semibold">{broadcast.title}</h3>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(broadcast.status)}`}>
-                      {broadcast.status.charAt(0).toUpperCase() + broadcast.status.slice(1)}
+                      {broadcast.status
+                        ? broadcast.status.charAt(0).toUpperCase() + broadcast.status.slice(1)
+                        : "Unknown"}
                     </span>
                   </div>
                   <p className="text-sm text-muted-foreground mb-3">{broadcast.message}</p>
