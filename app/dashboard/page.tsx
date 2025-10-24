@@ -2,21 +2,36 @@
 
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { BarChart3, MessageSquare, Sparkles, Send, TrendingUp, Users } from "lucide-react"
+import { BarChart3, MessageSquare, Sparkles, Send, Users, DollarSign, Target, ShoppingCart } from "lucide-react"
 import Link from "next/link"
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 
 export default function DashboardPage() {
-  const stats = [
-    { icon: Send, label: "Messages Sent", value: "2,543", change: "+12%" },
-    { icon: Users, label: "Active Customers", value: "156", change: "+8%" },
-    { icon: MessageSquare, label: "Auto-Replies", value: "24", change: "+3" },
-    { icon: TrendingUp, label: "Engagement Rate", value: "68%", change: "+5%" },
+  const businessMetrics = [
+    { icon: DollarSign, label: "Total Revenue", value: "₦245,680", change: "+24%", subtext: "This month" },
+    { icon: ShoppingCart, label: "Total Orders", value: "1,248", change: "+18%", subtext: "This month" },
+    { icon: Users, label: "Customer Lifetime Value", value: "₦1,960", change: "+12%", subtext: "Average" },
+    { icon: Target, label: "Conversion Rate", value: "12.4%", change: "+3.2%", subtext: "From messages" },
+  ]
+
+  const revenueTrendData = [
+    { week: "Week 1", revenue: 45000, orders: 180, customers: 120 },
+    { week: "Week 2", revenue: 52000, orders: 195, customers: 135 },
+    { week: "Week 3", revenue: 48000, orders: 175, customers: 125 },
+    { week: "Week 4", revenue: 100680, orders: 698, customers: 280 },
+  ]
+
+  const businessKPIs = [
+    { label: "Customer Acquisition Cost", value: "₦156", trend: "-8%" },
+    { label: "Average Order Value", value: "₦197", trend: "+5%" },
+    { label: "Customer Retention Rate", value: "78%", trend: "+6%" },
+    { label: "Message to Sale Conversion", value: "8.2%", trend: "+2.1%" },
   ]
 
   const recentActivity = [
-    { type: "broadcast", message: "Sent broadcast to 150 customers", time: "2 hours ago" },
-    { type: "template", message: "Created new auto-reply template", time: "5 hours ago" },
-    { type: "caption", message: "Generated 5 product captions", time: "1 day ago" },
+    { type: "sale", message: "New order from Chioma - ₦2,500", time: "15 minutes ago", value: "₦2,500" },
+    { type: "customer", message: "New customer acquired via broadcast", time: "1 hour ago", value: "1 customer" },
+    { type: "campaign", message: "Campaign generated ₦18,500 in sales", time: "3 hours ago", value: "₦18,500" },
   ]
 
   return (
@@ -24,7 +39,9 @@ export default function DashboardPage() {
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-lg p-8">
         <h2 className="text-3xl font-bold mb-2">Welcome back!</h2>
-        <p className="text-muted-foreground mb-6">Here's what's happening with your business today.</p>
+        <p className="text-muted-foreground mb-6">
+          Your business is performing well. Here's your business impact summary.
+        </p>
         <div className="flex gap-4">
           <Link href="/dashboard/captions">
             <Button>
@@ -41,18 +58,61 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Stats Grid */}
+      {/* Business Impact Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, idx) => (
-          <Card key={idx} className="p-6 border border-border">
+        {businessMetrics.map((metric, idx) => (
+          <Card key={idx} className="p-6 border border-border hover:border-primary/50 transition">
             <div className="flex items-start justify-between mb-4">
               <div className="p-3 bg-primary/10 rounded-lg">
-                <stat.icon className="w-6 h-6 text-primary" />
+                <metric.icon className="w-6 h-6 text-primary" />
               </div>
-              <span className="text-sm font-medium text-green-600">{stat.change}</span>
+              <span className="text-sm font-medium text-green-600">{metric.change}</span>
             </div>
-            <p className="text-muted-foreground text-sm mb-1">{stat.label}</p>
-            <p className="text-3xl font-bold">{stat.value}</p>
+            <p className="text-muted-foreground text-sm mb-1">{metric.label}</p>
+            <p className="text-3xl font-bold">{metric.value}</p>
+            <p className="text-xs text-muted-foreground mt-2">{metric.subtext}</p>
+          </Card>
+        ))}
+      </div>
+
+      {/* Revenue Trend Chart */}
+      <Card className="p-6 border border-border">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-lg font-semibold">Revenue Trend</h3>
+            <p className="text-sm text-muted-foreground">Monthly revenue and order performance</p>
+          </div>
+          <Button variant="outline" size="sm">
+            View Details
+          </Button>
+        </div>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={revenueTrendData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+            <XAxis dataKey="week" stroke="var(--color-muted-foreground)" />
+            <YAxis stroke="var(--color-muted-foreground)" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "var(--color-card)",
+                border: "1px solid var(--color-border)",
+                borderRadius: "8px",
+              }}
+            />
+            <Legend />
+            <Line type="monotone" dataKey="revenue" stroke="oklch(0.55 0.22 262.5)" strokeWidth={2} dot={{ r: 4 }} />
+          </LineChart>
+        </ResponsiveContainer>
+      </Card>
+
+      {/* Business KPIs */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {businessKPIs.map((kpi, idx) => (
+          <Card key={idx} className="p-6 border border-border">
+            <p className="text-muted-foreground text-sm mb-3">{kpi.label}</p>
+            <div className="flex items-end justify-between">
+              <p className="text-2xl font-bold">{kpi.value}</p>
+              <span className="text-sm font-medium text-green-600">{kpi.trend}</span>
+            </div>
           </Card>
         ))}
       </div>
@@ -101,7 +161,7 @@ export default function DashboardPage() {
 
       {/* Recent Activity */}
       <Card className="p-6 border border-border">
-        <h3 className="text-lg font-semibold mb-6">Recent Activity</h3>
+        <h3 className="text-lg font-semibold mb-6">Recent Business Activity</h3>
         <div className="space-y-4">
           {recentActivity.map((activity, idx) => (
             <div key={idx} className="flex items-center justify-between py-3 border-b border-border last:border-0">
@@ -112,6 +172,7 @@ export default function DashboardPage() {
                   <p className="text-xs text-muted-foreground">{activity.time}</p>
                 </div>
               </div>
+              <span className="text-sm font-semibold text-primary">{activity.value}</span>
             </div>
           ))}
         </div>

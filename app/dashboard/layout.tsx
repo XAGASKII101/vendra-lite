@@ -17,6 +17,7 @@ import {
   LogOut,
   Menu,
   X,
+  Zap,
 } from "lucide-react"
 
 export default function DashboardLayout({
@@ -53,6 +54,7 @@ export default function DashboardLayout({
     { icon: Sparkles, label: "Caption Generator", href: "/dashboard/captions" },
     { icon: MessageSquare, label: "Auto-Reply Templates", href: "/dashboard/templates" },
     { icon: Send, label: "Broadcast Manager", href: "/dashboard/broadcasts" },
+    { icon: Zap, label: "Smart Campaigns", href: "/dashboard/campaigns" },
     { icon: BarChart3, label: "Analytics", href: "/dashboard/analytics" },
     { icon: Settings, label: "Settings", href: "/dashboard/settings" },
   ]
